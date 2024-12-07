@@ -1,0 +1,74 @@
+import os
+
+# Define the base directory and folder structure
+base_dir = "Worksite-Safety-Monitoring-with-Deep-Learning"
+
+folders = [
+    "data/raw",
+    "data/processed",
+    "notebooks",
+    "src/data",
+    "src/models",
+    "src/api",
+    "src/utils",  # Added utils
+    "tests",
+    "deployments",  # Added deployments
+    "pipelines",  # Added pipelines
+    "mlflow",  # Added mlflow
+    ".github/workflows"
+]
+
+# Create the base directory
+os.makedirs(base_dir, exist_ok=True)
+
+# Loop through the folders and create them inside the base directory
+for folder in folders:
+    os.makedirs(os.path.join(base_dir, folder), exist_ok=True)
+
+# Create requirements.txt
+with open(os.path.join(base_dir, 'requirements.txt'), 'w') as f:
+    f.write("# Add your project dependencies here\n")
+
+# Create Dockerfile
+dockerfile_content = """# Dockerfile for Worksite Safety Monitoring
+FROM python:3.8-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the requirements file
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application
+COPY . .
+
+# Expose the application port (if applicable)
+EXPOSE 5000
+
+# Command to run the application
+CMD ["python", "app.py"]
+"""
+with open(os.path.join(base_dir, 'Dockerfile'), 'w') as f:
+    f.write(dockerfile_content)
+
+# Create README.md
+readme_content = """# Worksite Safety Monitoring with Deep Learning
+
+This repository contains a project for monitoring worksite safety using deep learning models. It involves data preprocessing, model development, and deployment.
+
+## Project Structure
+- `data/`: Raw and processed data
+- `notebooks/`: Jupyter notebooks for exploration and analysis
+- `src/`: Source code for data, models, and APIs
+- `tests/`: Unit tests for the code
+- `deployments/`: Deployment configurations
+- `pipelines/`: ML pipeline scripts
+- `mlflow/`: MLflow tracking for models
+"""
+with open(os.path.join(base_dir, 'README.md'), 'w') as f:
+    f.write(readme_content)
+
+print(f"Folder structure for {base_dir} with necessary files created successfully.")
